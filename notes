@@ -1,0 +1,171 @@
+5/18 
+Last Day CSS
+
+First thing to do in css:
+* {
+    box-sizing: border-box;
+}
+
+@media screen and (put in min for mobile first or max for desktop first)
+
+Use this at top of everything for mobile:
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+5/19
+JS
+
+async/event based:
+    Not everything happens synchronous in time ex. loading something later
+
+    // A printer prints colors represented by the letters "a" through "m". At the end of the print, it puts out a control string to show what colors were printed.  A "good" control string output example might be "aaabbbbhaijjjm" due to the fact that only the letters a through m were used, and no errors (other letters) were used.
+
+// When the printer has a malfunction, the control string marks it with a letter that isn't a through m, for example: "aaaxbbbbyyhwawiwjjjwwm".
+
+// Write a function, printer_error, which will output the error rate of the printer as a string whose numerator is the number of errors and the denominator the length of the control string. Do not reduce the fraction.
+
+// For example:
+// printer_error("aaabbbbhaijjjm") ==> "0/14"
+// printer_error("aaaxbbbbyyhwawiwjjjwwm") ==> "8/22"
+
+function printer_error(str) {
+    var incorrect = str.match(/[n-z]/ig).length
+    return incorrect + '/' + str.length;
+}
+
+5/23
+this
+
+this is for building templates, active makes it so can invoke function w/o arguments cuz 
+    already known
+
+this is the context but can also pass in a suffix which is another argument
+
+having 2 objects with {toString: function toString() {something}} can call on both with
+    book.toString() and cars.toString()
+
+
+5/24
+Closures
+
+5/29
+// Write a function that will return the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. The input string can be assumed to contain only alphanumeric characters, including digits, uppercase and lowercase alphabets.
+
+// function dups (str){
+//   var array = str.split('');
+//   var record = [];
+//   var count = 0;
+//   for(var i = 0; i < array.length; i++) {
+//     var curr = array[i];
+//     for(var j = 0; j < array.length; j++) {
+//       if(curr === array[j]) {
+//         count++;
+//         if(count > 1) {
+//           record.push(curr);
+//         }
+//       }
+//     }
+//   }
+//   return record.join(' ');
+// }
+
+function dups (str){
+  var dups = [];
+  var strArr = str.toLowerCase().split("");
+  for (var i = 0; i < strArr.length; i++){
+    if (strArr.indexOf(strArr[i]) !== i){
+      if(!dups.includes(strArr[i])){
+        dups.push(strArr[i])
+      }
+    }  
+  }
+  return dups.length
+}
+
+// track duplicates
+// make comparison possible, and split the str
+//loop through the arraysee if the letter is a duplicate
+//if it is a duplicate, ensure the duplicate isn't already tracked
+//after finding the first duplicate, track it 
+//return the results
+
+
+
+console.log(dups("abcde"));// -> 0 # no characters repeats more than once
+console.log(dups("aabbcde"));// -> 2 # 'a' and 'b'
+console.log(dups("aabbcdeB"));// -> 2 # 'a' and 'b'
+console.log(dups("indivisibility"));// -> 1 # 'i'
+console.log(dups("Indivisibilities"));// -> 2 # 'i' and 's'
+console.log(dups("aa11"));// -> 2 # 'a' and '1'
+
+5/30
+Services
+
+5/31
+6/01
+Yesterday pseudocode summary
+- inject $http
+- create a func in a Services   
+    - return the $http request (get/post/put/delete) = promise
+- promise has  amethod called 'then'
+    - promise .then and function
+    - promise.then(function(response){})
+- get the data from response.data which data is a prop on response object in angular
+
+promise is a constructor
+var promise = new Promise function(resolveFunc, rejectFunc) 
+end goal is promise.then(func(response)){}
+looks like:
+new Promise (function(resolve, reject) {
+    setTimeout(function() {
+    resolve(response)
+},5000)
+})
+response triggers the then callback 
+
+example of promise in JS using timeout to say world in hello world:
+function Promise((resolve, reject))
+console.log('Hello)
+var promise = new Promise (function(resolve, reject) {
+    setTimeout(function() {
+        resolve ('world'), 5000)
+})
+promise.then(function(val) {
+    console.log(val) //which gives world
+})
+
+$q is a promise service meant to make promises for you easier
+returning $q is same as returning a promise (angular doc on $q)
+activate with same promise.then after
+
+6/04
+Angular:
+    - loop through all keys and values in ng-repeat with:
+        <div ng-repeat="(key, value) in data">
+             <div> {{ key }} </div> <div> {{ value }} </div>
+        </div>
+
+Promise and response from $http GET request:
+    - $http.get('url')
+        .then(function(response) {
+            $scope.data = response.data;
+        });
+    - don't forget $scope and $http as parameter in top controller function
+
+<div ng-model=''>  - connect html information and automatically adds $scope to it but to modify must add
+                the $scope to the controller
+<div ng-click=''> - when client enters in data or clicks submit and to do something to that information
+            can then after the = sign put in a function so that controller does a search/function
+<img ng-source=''></img> - for images
+required attribute - for input, select, or textarea to indicate target object required or not
+
+filter form is - expression | filterName:parameter
+currency - {{amount|currency:'USD$'}}
+date - {{startDate|date:'short'}}
+filter - repo in repos|filter:searchTerm
+json - {{repo|json}}
+limitTo - repo in repos|limitTo:10
+lowercase, uppercase - {{user.name|uppercase}}
+number - {{stars|number}}
+orderBy - repo in repos|filter:searchTerm|orderBy:'name'
+number filter - putting number after | will give commas in numbers greater than thousand
